@@ -1,0 +1,6 @@
+# files and folder to be ignord
+venv/
+.env
+.idea/
+__pycache__/
+user_list.csv

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Login Page</title>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/loginStyle.css">
+    <title>Login page</title>
+</head>
+<body>
+  <form action="/main">
+    <h1>Login</h1>
+    <label for="username-entry">Username:</label>
+    <input id="username-entry" type="text" name="username" placeholder="Enter your username" minlength="5" required>
+    <br>
+    <label for="password-entry">Password:</label>
+    <input id="password-entry"  type="password" name="password" placeholder="Enter your password" minlength="5" maxlength="20" required>
+    <br>
+    <input type="submit" value="Login">
+  </form>
+</body>
+</html>

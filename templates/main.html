@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+<!--    jQuery DataTable plugin to allow sorting/search features to table-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="/static/mainStyle.css">
+</head>
+<body>
+    <div id="banner">
+         <!--creates button to log out/access login page from user management page-->
+        <a href="{{ url_for('login') }}">Log out</a>
+    </div>
+    <h2 id="top" class="text-center">UltraMed Interview Candidates</h2>
+    <h4>View and manage interview candidates</h4>
+    <table id="user_table" class="rounded-table" border="1">
+       <thead>
+         <tr>
+<!--            <th>ID</th>-->
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th></th>
+            <th></th>
+        </tr>
+       </thead>
+       <tbody>
+            {% for user in user_list %}
+            <tr>
+<!--                <td>{{ user[0] }}</td>-->
+                <td>{{ user[1] }}</td>
+                <td>{{ user[2] }}</td>
+                <td>{{ user[3] }}</td>
+                <td>
+                    <form method="GET" action="{{ url_for('edit_user', id=user[0]) }}">
+                        <button id="button" type="submit">Edit</button>
+                    </form>
+                </td>
+               <td>
+                   <form method="POST" action="{{ url_for('delete_user', id=user[0]) }}" onsubmit="return confirmDelete('{{ user[1] }}')">
+                       <button type="submit">Delete</button>
+                   </form>
+                </td>
+            </tr>
+            {% endfor %}
+       </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <script>
+        <!--initialize the DataTables plugin-->
+      $(document).ready(function() {
+        $('#user_table').DataTable();
+      });
+
+      <!--delete user pop-up to user-->
+      function confirmDelete(userName) {
+        return confirm(`Are you sure you want to delete user: ${userName}? This action cannot be undone`);
+    }
+    </script>
+    <a href="{{ url_for('add_user') }}">
+        <button type="button" class="btn" btn-Info>Add New User</button>
+    </a>
+    <br>
+    <br>
+    <a href="#top">Top of Page</a>
+</body>
+</html>

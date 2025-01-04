@@ -1,0 +1,54 @@
+/* Styling for main.html */
+body {
+    font-family: "Open Sans", Arial;
+    margin: 30px;
+}
+div#banner {
+   position: absolute;
+   top: 0;
+   left: 0;
+   background-color: #ADD8E6;
+   width: 100%;
+   border: 1px solid #000;
+   padding: 5px;
+ }
+.rounded-table {
+    width: 65%;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    magin_left: 80px;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+th {
+    background-color: #ADD8E6;
+    cursor: pointer;
+}
+th.sort-asc::after {
+    content: " ▲";
+}
+th.sort-desc::after {
+    content: " ▼";
+}
+button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+h2 {
+     color: black;
+     text-align: center;
+     padding-top: 10px;
+     font-weight: 900;
+}
+h5 {
+    color: black;
+    text-align: left;
+}
