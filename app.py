@@ -10,26 +10,30 @@ import logging
 load_dotenv()
 app = Flask(__name__)
 ##
+logging.basicConfig(level=logging.INFO)
+
 if os.getenv('JAWSDB_MARIA_URL'):
     # Heroku environment for deployment
     url = os.getenv('JAWSDB_MARIA_URL')
-    # print(url)
-    # print(os.environ)
     parsed_url = urllib.parse.urlparse(url)
-    app.config['MYSQL_HOST'] = parsed_url.hostname
-    app.config['MYSQL_USER'] = parsed_url.username
-    app.config['MYSQL_PASSWORD'] = parsed_url.password
-    app.config['MYSQL_DB'] = parsed_url.path[1:]  # Remove leading slash from the path
-    app.config['MYSQL_PORT'] = 3306
-    # print(f"herokudb host: {app.config['MYSQL_HOST']}")
 
-    # Log connection details (hiding sensitive info)
-    logging.info(f"Connecting to MySQL Database:")
-    logging.info(f"Herokudb Host: {app.config['MYSQL_HOST']}")
-    logging.info(f"User: {app.config['MYSQL_USER']}")
-    logging.info(f"Database: {app.config['MYSQL_DB']}")
+    # Ensure parsed_url components are available
+    if parsed_url.hostname and parsed_url.username and parsed_url.password and parsed_url.path:
+        app.config['MYSQL_HOST'] = parsed_url.hostname
+        app.config['MYSQL_USER'] = parsed_url.username
+        app.config['MYSQL_PASSWORD'] = parsed_url.password
+        app.config['MYSQL_DB'] = parsed_url.path[1:]  # Remove leading slash
+        app.config['MYSQL_PORT'] = 3306  # Ensure correct port
+
+        # Log the connection details (excluding sensitive information)
+        logging.info(f"Connecting to Heroku MySQL Database:")
+        logging.info(f"Host: {app.config['MYSQL_HOST']}")
+        logging.info(f"User: {app.config['MYSQL_USER']}")
+        logging.info(f"Database: {app.config['MYSQL_DB']}")
+    else:
+        logging.error(f"Failed to parse the JAWSDB_URL correctly: {url}")
 else:
-    # Connect to local MySQL database server - Required
+    # Local MySQL configuration
     app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', '127.0.0.1')
     app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')
     app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
@@ -45,7 +49,6 @@ else:
 
 print(f"Connecting to MySQL at {app.config['MYSQL_HOST']}:{app.config['MYSQL_PORT']} as {app.config['MYSQL_USER']}")
 mysql = MySQL(app)
-
 # External API URL
 api_url = "https://tech-interview-api-ultramed.vercel.app/users"
 
