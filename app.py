@@ -9,7 +9,7 @@ import logging
 
 load_dotenv()
 app = Flask(__name__)
-##
+
 logging.basicConfig(level=logging.INFO)
 
 if os.getenv('JAWSDB_MARIA_URL'):
@@ -17,7 +17,7 @@ if os.getenv('JAWSDB_MARIA_URL'):
     url = os.getenv('JAWSDB_MARIA_URL')
     parsed_url = urllib.parse.urlparse(url)
 
-    # Ensure parsed_url components are available
+    # Ensure parsed_url components are available and parsed correctly
     if parsed_url.hostname and parsed_url.username and parsed_url.password and parsed_url.path:
         app.config['MYSQL_HOST'] = parsed_url.hostname
         app.config['MYSQL_USER'] = parsed_url.username
@@ -49,6 +49,7 @@ else:
 
 print(f"Connecting to MySQL at {app.config['MYSQL_HOST']}:{app.config['MYSQL_PORT']} as {app.config['MYSQL_USER']}")
 mysql = MySQL(app)
+
 # External API URL
 api_url = "https://tech-interview-api-ultramed.vercel.app/users"
 
@@ -87,6 +88,7 @@ def write_to_csv(file_name="user_list.csv"):
     Write API data to a CSV file. The data in the CSV file is used to create the database in MySQL.
     The table in the MySQL database was created within MySQL using import from CSV file.
     :param: file_name: CSV file name to save API data. Default to user_list
+    :return: CSV file with file_name
     """
     try:
         # Get API data
