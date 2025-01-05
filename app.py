@@ -4,15 +4,27 @@ import csv
 import requests
 import os
 from dotenv import load_dotenv
+import mariadb
+import urllib.parse
 
 load_dotenv()
 app = Flask(__name__)
 
-# Connect to MySQL database server - Required
-app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'localhost')
-app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'default_user')
-app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', 'default_password')
-app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'default_db')
+if os.getenv('JAWSDB_MARIA_URL'):
+    # Heroku environment
+    url = os.getenv('jawsDB_MARIA_URL')
+    parsed_url = urllib.parse.urlparse(url)
+    app.config['MYSQL_HOST'] = parsed_url.hostname
+    app.config['MYSQL_USER'] = parsed_url.username
+    app.config['MYSQL_PASSWORD'] = parsed_url.password
+    app.config['MYSQL_DB'] = parsed_url.path[1:]  # Remove leading slash from the path
+else:
+    # Connect to MySQL database server - Required
+    app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'localhost')
+    app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'default_user')
+    app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', 'default_password')
+    app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'usersDB')
+    app.config['MYSQL_PORT'] = 3306
 
 
 mysql = MySQL(app)
