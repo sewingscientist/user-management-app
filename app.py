@@ -5,6 +5,7 @@ import requests
 import os
 from dotenv import load_dotenv
 import urllib.parse
+import logging
 
 load_dotenv()
 app = Flask(__name__)
@@ -17,15 +18,28 @@ if os.getenv('JAWSDB_MARIA_URL'):
     app.config['MYSQL_USER'] = parsed_url.username
     app.config['MYSQL_PASSWORD'] = parsed_url.password
     app.config['MYSQL_DB'] = parsed_url.path[1:]  # Remove leading slash from the path
+
+    # Log connection details (masking sensitive info)
+    logging.info(f"Connecting to MySQL Database:")
+    logging.info(f"Host: {app.config['MYSQL_HOST']}")
+    logging.info(f"User: {app.config['MYSQL_USER']}")
+    logging.info(f"Database: {app.config['MYSQL_DB']}")
 else:
     # Connect to MySQL database server - Required
-    app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'localhost')
-    app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'default_user')
-    app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', 'default_password')
-    app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'usersDB')
-    app.config['MYSQL_PORT'] = 3306
+    app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', '127.0.0.1')
+    app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')
+    app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', '')
+    app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'testdb')
+    app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT', 3306))
 
+    # Log local connection details
+    logging.info("Running locally with MySQL configuration:")
+    logging.info(f"Host: {app.config['MYSQL_HOST']}")
+    logging.info(f"User: {app.config['MYSQL_USER']}")
+    logging.info(f"Database: {app.config['MYSQL_DB']}")
+    logging.info(f"Port: {app.config['MYSQL_PORT']}")
 
+print(f"Connecting to MySQL at {app.config['MYSQL_HOST']}:{app.config['MYSQL_PORT']} as {app.config['MYSQL_USER']}")
 mysql = MySQL(app)
 
 # External API URL
