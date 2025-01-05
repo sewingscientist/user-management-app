@@ -13,21 +13,24 @@ app = Flask(__name__)
 if os.getenv('JAWSDB_MARIA_URL'):
     # Heroku environment for deployment
     url = os.getenv('JAWSDB_MARIA_URL')
+    # print(url)
+    # print(os.environ)
     parsed_url = urllib.parse.urlparse(url)
     app.config['MYSQL_HOST'] = parsed_url.hostname
     app.config['MYSQL_USER'] = parsed_url.username
     app.config['MYSQL_PASSWORD'] = parsed_url.password
     app.config['MYSQL_DB'] = parsed_url.path[1:]  # Remove leading slash from the path
     app.config['MYSQL_PORT'] = 3306
+    # print(f"herokudb host: {app.config['MYSQL_HOST']}")
 
     # Log connection details (hiding sensitive info)
     logging.info(f"Connecting to MySQL Database:")
-    logging.info(f"Host: {app.config['MYSQL_HOST']}")
+    logging.info(f"Herokudb Host: {app.config['MYSQL_HOST']}")
     logging.info(f"User: {app.config['MYSQL_USER']}")
     logging.info(f"Database: {app.config['MYSQL_DB']}")
 else:
     # Connect to local MySQL database server - Required
-    app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
+    app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', '127.0.0.1 ')
     app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')
     app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
     app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
