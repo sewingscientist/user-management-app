@@ -4,7 +4,6 @@ import csv
 import requests
 import os
 from dotenv import load_dotenv
-import mariadb
 import urllib.parse
 
 load_dotenv()
