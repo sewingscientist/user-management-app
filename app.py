@@ -36,8 +36,8 @@ else:
     # Local MySQL configuration
     app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', '127.0.0.1')
     app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')
-    app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
-    app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
+    app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', 'default_password')
+    app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'default_db')
     app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT', 3306))
 
     # Log local connection details
