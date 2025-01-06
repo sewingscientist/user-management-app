@@ -53,4 +53,6 @@ SELECT * FROM user_list WHERE name = "Mia";
 -- Show only the name column from the table - change [name] to appropriate table field
 SELECT name FROM user_list;
 
+-- Reset ID incrementation to start from 50 for this database's purposes, if needed
+ALTER TABLE user_list AUTO_INCREMENT = 50;
 

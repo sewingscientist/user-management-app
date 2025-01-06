@@ -23,23 +23,23 @@
             <th>Name</th>
             <th>Email</th>
             <th>Status</th>
-            <th></th>
-            <th></th>
+            <th></th> <!-- column for edit button, with no header title-->
+            <th></th> <!-- column for delete button, with no header title-->
         </tr>
        </thead>
        <tbody>
-            {% for user in user_list %}
+            {% for user in user_list %} <!-- for each user, each row contains the following data until endfor:-->
             <tr>
-<!--                <td>{{ user[0] }}</td>-->
-                <td>{{ user[1] }}</td>
-                <td>{{ user[2] }}</td>
-                <td>{{ user[3] }}</td>
-                <td>
+<!--                <td>{{ user[0] }}</td>-->   <!-- get ID of user, removed from UI-->
+                <td>{{ user[1] }}</td> <!-- get name of user-->
+                <td>{{ user[2] }}</td> <!-- get email of user-->
+                <td>{{ user[3] }}</td> <!-- get status of user-->
+                <td> <!-- edit button in column 4 for each user-->
                     <form method="GET" action="{{ url_for('edit_user', id=user[0]) }}">
                         <button id="button" type="submit">Edit</button>
                     </form>
                 </td>
-               <td>
+               <td> <!-- delete button in column 5 for each user-->
                    <form method="POST" action="{{ url_for('delete_user', id=user[0]) }}" onsubmit="return confirmDelete('{{ user[1] }}')">
                        <button type="submit">Delete</button>
                    </form>
