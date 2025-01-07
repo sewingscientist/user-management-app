@@ -56,7 +56,7 @@ api_url = "https://tech-interview-api-ultramed.vercel.app/users"
 
 def fetch_users(api_url):
     """
-    Get data from external API.
+    Gets data from external API.
     :param: The API url to fetch data from
     :return: A list of dictionaries
     """
@@ -73,7 +73,7 @@ def fetch_users(api_url):
 
 def get_api_data_keys(data):
     """
-    Extract keys from the first entry of API data (in this case no nesting keys).
+    Extracts keys from the first entry of API data (in this case no nesting keys).
     :param data: List of dictionaries from API response
     :return: List of keys found in API
     """
@@ -121,12 +121,20 @@ write_to_csv()
 # Route to render login page
 @app.route("/")
 def login():
+    """
+    Produces the login.html form for users to input their username and password
+    :return: A login page
+    """
     return render_template("login.html")
 
 
 # Route to render main page containing users list
 @app.route('/main')
 def main():
+    """
+    Connects to database and queries for all entries in the specified table.
+    :return: A table of all entries displayed in a table to the user.
+    """
     try:
         # Query the database to get all users
         cur = mysql.connection.cursor()
@@ -144,9 +152,17 @@ def main():
 # Route to render edit page
 @app.route('/edit_user/<int:id>', methods=['GET', 'POST'])
 def edit_user(id):
+    """
+    Renders a page to allow for current user entries to be edited. When form is submitted,
+    user is redirected to main page. If user with specified ID not found, error message displayed.
+    :param: id: variable to be added to URL to edit specific user with given id
+    :return: HTML form for user to edit user details
+    """
     try:
+
         cur = mysql.connection.cursor()
 
+        # Access form data on page to update database
         if request.method == 'POST':
             name = request.form['name']
             email = request.form['email']
@@ -182,6 +198,11 @@ def edit_user(id):
 # Route to render page to add users
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
+    """
+    Renders a page to allow for a new user entry. When form is submitted,
+    user is redirected to main page
+    :return: HTML form for user to add new user details
+   """
     try:
         if request.method == 'POST':
             name = request.form['name']
@@ -203,7 +224,11 @@ def add_user():
 
 @app.route('/delete/<int:id>', methods=['POST'])
 def delete_user(id):
-    # Delete the user with the given ID from user_list table in database
+    """
+    Displays a pop-up to the user to verify if user wants the named user to be deleted.
+    Alerts user that action cannot be undone.
+    :param: id: id of user in database to be deleted.
+    """
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM user_list WHERE id = %s", (id,))
     mysql.connection.commit()
@@ -213,4 +238,4 @@ def delete_user(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
