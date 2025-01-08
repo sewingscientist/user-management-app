@@ -49,4 +49,5 @@ MYSQL_DB = *'yourDatabaseName'*
 
 #### 3. To run application within command line run:
 
-*python app.py*
+*python app.py* or
+*flask run*

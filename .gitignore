@@ -3,6 +3,9 @@ venv/
 .env
 .idea/
 __pycache__/
-user_list.csv
-database/herokuDB.sql
-heidiSQLscript.sql
+database/heidiSQLscript.sql
+tests/.pytest_cache
+
+# files ending in:
+*.csv
+
